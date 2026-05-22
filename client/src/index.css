@@ -1,3 +1,27 @@
+/*
+ * PROJECT SKYHARVEST — "Declassified Cold War Dossier" Design System
+ *
+ * Design Philosophy: Government document aesthetic meets analog horror.
+ * Every element should feel like it was pulled from a sealed filing cabinet.
+ *
+ * Color Philosophy:
+ *   - Background: Near-black (#0a0a08) — the void of a sealed vault
+ *   - Amber (#c8a84b) — aged CRT screens, classified ink stamps, candlelight
+ *   - Blood-red (#8b1a1a) — danger, redaction, urgency
+ *   - Parchment (#d4c89a) — aged paper, document surfaces
+ *   - Sickly green (#6b8c3e) — bioluminescent organism, biological dread
+ *
+ * Typography:
+ *   - Headers: "Special Elite" — typewriter aesthetic
+ *   - Body: "Courier Prime" — monospaced, document-like
+ *   - Labels/Stamps: "Oswald" condensed — stencil/stamp feel
+ *
+ * Signature Elements:
+ *   - Scan-line overlay (CSS pseudo-element on body)
+ *   - Redaction bars that animate on hover
+ *   - Rubber-stamp badges
+ */
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -27,131 +51,97 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-amber: var(--amber);
+  --color-blood: var(--blood);
+  --color-parchment: var(--parchment);
+  --color-organism: var(--organism);
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
-}
-
-.dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --radius: 0.15rem;
+  --background: oklch(0.09 0.005 80);
+  --foreground: oklch(0.82 0.04 85);
+  --card: oklch(0.12 0.006 80);
+  --card-foreground: oklch(0.82 0.04 85);
+  --popover: oklch(0.12 0.006 80);
+  --popover-foreground: oklch(0.82 0.04 85);
+  --primary: oklch(0.72 0.12 75);
+  --primary-foreground: oklch(0.09 0.005 80);
+  --secondary: oklch(0.16 0.008 80);
+  --secondary-foreground: oklch(0.75 0.04 85);
+  --muted: oklch(0.14 0.006 80);
+  --muted-foreground: oklch(0.55 0.03 85);
+  --accent: oklch(0.16 0.008 80);
+  --accent-foreground: oklch(0.82 0.04 85);
+  --destructive: oklch(0.42 0.18 25);
+  --destructive-foreground: oklch(0.95 0.01 85);
+  --border: oklch(0.25 0.01 80);
+  --input: oklch(0.18 0.008 80);
+  --ring: oklch(0.72 0.12 75);
+  /* Custom tokens */
+  --amber: oklch(0.72 0.12 75);
+  --blood: oklch(0.42 0.18 25);
+  --parchment: oklch(0.84 0.06 88);
+  --organism: oklch(0.55 0.12 140);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    background-color: #0a0a08;
+    color: #c8a84b;
+    position: relative;
+    overflow-x: hidden;
   }
+
+  /* Scan-line overlay across entire page */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Special Elite', 'Courier New', monospace;
+    letter-spacing: 0.05em;
+  }
+
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),
   [type="submit"]:not(:disabled),
-  [type="reset"]:not(:disabled),
-  a[href],
-  select:not(:disabled),
-  input[type="checkbox"]:not(:disabled),
-  input[type="radio"]:not(:disabled) {
+  a[href] {
     @apply cursor-pointer;
   }
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
 
@@ -162,16 +152,234 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1280px;
     }
+  }
+
+  /* Stamp badge component */
+  .stamp-badge {
+    font-family: 'Oswald', 'Arial Narrow', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 3px solid currentColor;
+    padding: 0.2em 0.6em;
+    display: inline-block;
+    transform: rotate(-3deg);
+    opacity: 0.85;
+    font-size: 0.75rem;
+  }
+
+  /* Redaction bar */
+  .redact {
+    position: relative;
+    display: inline;
+  }
+
+  .redact::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -2px;
+    right: -2px;
+    bottom: 0;
+    background: #1a1a18;
+    transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-origin: left;
+  }
+
+  .redact:hover::after {
+    width: 0;
+    left: auto;
+    right: -2px;
+  }
+
+  /* CTA button — primary amber */
+  .btn-classified {
+    font-family: 'Oswald', 'Arial Narrow', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 2px solid #c8a84b;
+    color: #c8a84b;
+    padding: 0.85rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.25s ease-out, transform 0.16s ease-out;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-classified::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #c8a84b;
+    transform: translateX(-102%);
+    transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: -1;
+  }
+
+  .btn-classified:hover {
+    color: #0a0a08;
+  }
+
+  .btn-classified:hover::before {
+    transform: translateX(0);
+  }
+
+  .btn-classified:active {
+    transform: scale(0.97);
+  }
+
+  /* Section divider — redaction bar style */
+  .section-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c8a84b 20%, #c8a84b 80%, transparent);
+    opacity: 0.4;
+    margin: 0;
+  }
+
+  /* Document card */
+  .doc-card {
+    background: #111110;
+    border: 1px solid rgba(200, 168, 75, 0.2);
+    border-left: 3px solid #c8a84b;
+    position: relative;
+  }
+
+  .doc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* Typewriter animation */
+  @keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  @keyframes blink-cursor {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: #c8a84b; }
+  }
+
+  /* Flicker animation for hero */
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.85; }
+    94% { opacity: 1; }
+    96% { opacity: 0.9; }
+    97% { opacity: 1; }
+  }
+
+  .flicker {
+    animation: flicker 6s infinite;
+  }
+
+  /* Pulse heartbeat for CTA */
+  @keyframes heartbeat {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(200, 168, 75, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(200, 168, 75, 0); }
+  }
+
+  .pulse-amber {
+    animation: heartbeat 2.5s ease-in-out infinite;
+  }
+
+  /* Scroll-reveal fade-up */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-up {
+    animation: fadeUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  /* Noise texture overlay for sections */
+  .noise-overlay {
+    position: relative;
+  }
+
+  .noise-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  /* Vignette */
+  .vignette {
+    box-shadow: inset 0 0 120px rgba(0,0,0,0.7);
+  }
+
+  /* Redact bar full-width */
+  .redact-bar {
+    display: block;
+    height: 1.4em;
+    background: #1a1a18;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .redact-bar .revealed-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+    color: #c8a84b;
+    font-size: 0.85em;
+    opacity: 0;
+    transition: opacity 0.3s ease-out 0.1s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .redact-bar:hover .revealed-text {
+    opacity: 1;
+  }
+
+  .redact-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #1a1a18;
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .redact-bar:hover::before {
+    transform: scaleX(0);
+    transform-origin: right;
   }
 }
