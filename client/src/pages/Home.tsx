@@ -19,6 +19,35 @@ const FIELD_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V
 
 const BOOKING_URL = "https://offthecouxh.com";
 
+// ─── Gallery image URLs ────────────────────────────────────────────────────────
+const GALLERY_ITEMS = [
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V8qt4eGMb/gallery-1-hatchery-3ndtY4znRBvqWhSLTBmHZ2.webp",
+    label: "HATCHERY B-103",
+    caption: "Specimen extraction laboratory — Level 5 clearance required",
+  },
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V8qt4eGMb/gallery-2-corridor-aeWJHdXfU5C54JdcRdY8Wm.webp",
+    label: "RESTRICTED CORRIDOR",
+    caption: "Underground access tunnel — photography prohibited",
+  },
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V8qt4eGMb/gallery-3-console-GJE8r3WT4uWW3z2XosNnvY.webp",
+    label: "MONITORING STATION",
+    caption: "Signal intercept console — last active October 14, 1994",
+  },
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V8qt4eGMb/gallery-4-outdoor-MgYuSCQitdvrTnjrXSUS2w.webp",
+    label: "INCIDENT SITE",
+    caption: "Peterborough County — restricted perimeter, active containment",
+  },
+  {
+    src: "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V8qt4eGMb/gallery-5-specimen-CREKyBuW9cbdyutN3DhodL.webp",
+    label: "HARVESTER-7",
+    caption: "Organism specimen — do not expose to open air",
+  },
+];
+
 // ─── Next booking date: first Saturday at least 7 days from now ────────────────
 function getNextBookingDate(): Date {
   const now = new Date();
@@ -102,6 +131,209 @@ function useTypewriter(text: string, speed = 55, startDelay = 400) {
     return () => clearTimeout(timeout);
   }, [text, speed, startDelay]);
   return { displayed, done };
+}
+
+// ─── Gallery section ──────────────────────────────────────────────────────────
+function GallerySection() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef(0);
+  const scrollStartX = useRef(0);
+  const { ref: sectionRef, visible } = useScrollReveal();
+
+  // Update active index based on scroll position
+  const handleScroll = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const cardW = el.scrollWidth / GALLERY_ITEMS.length;
+    const idx = Math.round(el.scrollLeft / cardW);
+    setActiveIdx(Math.min(idx, GALLERY_ITEMS.length - 1));
+  }, []);
+
+  // Mouse drag-to-scroll
+  const onMouseDown = useCallback((e: React.MouseEvent) => {
+    setIsDragging(true);
+    dragStartX.current = e.clientX;
+    scrollStartX.current = trackRef.current?.scrollLeft ?? 0;
+  }, []);
+
+  const onMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging || !trackRef.current) return;
+    const delta = dragStartX.current - e.clientX;
+    trackRef.current.scrollLeft = scrollStartX.current + delta;
+  }, [isDragging]);
+
+  const onMouseUp = useCallback(() => setIsDragging(false), []);
+
+  // Scroll to card
+  const scrollTo = useCallback((idx: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const cardW = el.scrollWidth / GALLERY_ITEMS.length;
+    el.scrollTo({ left: cardW * idx, behavior: "smooth" });
+    setActiveIdx(idx);
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="py-16 relative overflow-hidden"
+      style={{
+        background: "#080806",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(32px)",
+        transition: "opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.23,1,0.32,1)",
+      }}
+    >
+      {/* Section header */}
+      <div className="container mb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span
+              className="stamp-badge text-xs"
+              style={{ color: "#c8a84b", borderColor: "#c8a84b" }}
+            >
+              EVIDENCE FILE
+            </span>
+            <h2
+              className="text-sm font-bold tracking-widest uppercase"
+              style={{ fontFamily: "'Oswald', sans-serif", color: "#d4c89a" }}
+            >
+              Recovered Documentation
+            </h2>
+          </div>
+          <p
+            className="hidden sm:block text-xs tracking-widest opacity-40"
+            style={{ fontFamily: "'Oswald', sans-serif", color: "#c8a84b" }}
+          >
+            ← DRAG TO SCROLL →
+          </p>
+        </div>
+      </div>
+
+      {/* Horizontal scroll track */}
+      <div
+        ref={trackRef}
+        className="gallery-track flex gap-4 overflow-x-auto pb-4 px-4 sm:px-8"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          cursor: isDragging ? "grabbing" : "grab",
+          userSelect: "none",
+          WebkitOverflowScrolling: "touch",
+          scrollSnapType: "x mandatory",
+        }}
+        onScroll={handleScroll}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+      >
+        {/* Left padding spacer aligned to container */}
+        <div className="shrink-0" style={{ width: "max(1rem, calc((100vw - 1280px) / 2))" }} />
+
+        {GALLERY_ITEMS.map((item, i) => (
+          <div
+            key={i}
+            className="shrink-0 relative overflow-hidden group"
+            style={{
+              width: "clamp(260px, 38vw, 520px)",
+              scrollSnapAlign: "start",
+              border: "1px solid rgba(200,168,75,0.18)",
+              transition: "border-color 0.3s ease",
+              borderColor: activeIdx === i ? "rgba(200,168,75,0.5)" : "rgba(200,168,75,0.18)",
+            }}
+            onClick={() => scrollTo(i)}
+          >
+            {/* Image */}
+            <div className="relative overflow-hidden" style={{ aspectRatio: "3/2" }}>
+              <img
+                src={item.src}
+                alt={item.label}
+                draggable={false}
+                className="w-full h-full object-cover transition-transform duration-700"
+                style={{
+                  filter: "brightness(0.75) contrast(1.1) sepia(0.15)",
+                  transform: activeIdx === i ? "scale(1.04)" : "scale(1)",
+                }}
+              />
+              {/* Scan-line overlay */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)",
+                }}
+              />
+              {/* Hover gradient */}
+              <div
+                className="absolute inset-0 transition-opacity duration-300"
+                style={{
+                  background: "linear-gradient(to top, rgba(10,10,8,0.9) 0%, rgba(10,10,8,0.2) 50%, transparent 100%)",
+                  opacity: activeIdx === i ? 1 : 0.6,
+                }}
+              />
+              {/* File number badge */}
+              <div
+                className="absolute top-3 left-3"
+                style={{
+                  fontFamily: "'Oswald', sans-serif",
+                  fontSize: "0.6rem",
+                  color: "rgba(200,168,75,0.5)",
+                  letterSpacing: "0.15em",
+                }}
+              >
+                IMG-{String(i + 1).padStart(3, "0")} / NRC-1995
+              </div>
+            </div>
+
+            {/* Caption bar */}
+            <div
+              className="px-4 py-3"
+              style={{ background: "rgba(10,10,8,0.95)" }}
+            >
+              <p
+                className="text-xs font-bold tracking-widest uppercase mb-1"
+                style={{ fontFamily: "'Oswald', sans-serif", color: "#c8a84b" }}
+              >
+                {item.label}
+              </p>
+              <p
+                className="text-xs leading-relaxed opacity-60"
+                style={{ fontFamily: "'Courier Prime', monospace", color: "#a89060" }}
+              >
+                {item.caption}
+              </p>
+            </div>
+          </div>
+        ))}
+
+        {/* Right padding spacer */}
+        <div className="shrink-0" style={{ width: "max(1rem, calc((100vw - 1280px) / 2))" }} />
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex justify-center gap-2 mt-6">
+        {GALLERY_ITEMS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => scrollTo(i)}
+            aria-label={`Go to image ${i + 1}`}
+            className="transition-all duration-300"
+            style={{
+              width: activeIdx === i ? "1.5rem" : "0.4rem",
+              height: "0.4rem",
+              background: activeIdx === i ? "#c8a84b" : "rgba(200,168,75,0.25)",
+              border: "none",
+              borderRadius: "2px",
+            }}
+          />
+        ))}
+      </div>
+
+
+    </section>
+  );
 }
 
 // ─── Countdown hook ────────────────────────────────────────────────────────────
@@ -664,6 +896,9 @@ export default function Home() {
           </RevealSection>
         </div>
       </section>
+
+      {/* ── GALLERY ────────────────────────────────────────────────────────── */}
+      <GallerySection />
 
       {/* ── BRIEFING / LOGISTICS ───────────────────────────────────────────── */}
       <section id="briefing" className="py-24 relative" style={{ background: "#0c0c0a" }}>
