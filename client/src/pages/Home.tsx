@@ -17,7 +17,7 @@ const DOSSIER_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J9
 const ORGANISM_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V8qt4eGMb/skyharvest-organism-HQ87xyxTM6v2cXNQhJxeht.webp";
 const FIELD_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V8qt4eGMb/skyharvest-field-fWpY6q4rabeYE6Hw8EWk4T.webp";
 
-const BOOKING_URL = "https://offthecouxh.com";
+const BOOKING_URL = "https://offthecouch.io/book/STALK";
 
 // ─── Gallery image URLs ────────────────────────────────────────────────────────
 const GALLERY_ITEMS = [
