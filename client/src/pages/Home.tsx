@@ -703,13 +703,18 @@ export default function Home() {
   const [navScrolled, setNavScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [showStickyBtn, setShowStickyBtn] = useState(false);
 
-  // Countdown target — next Saturday evening
+  // Countdown target — October 2, 2026 event start
   const [bookingTarget] = useState(() => getNextBookingDate());
   const countdown = useCountdown(bookingTarget);
 
   useEffect(() => {
-    const handler = () => setNavScrolled(window.scrollY > 60);
+    const handler = () => {
+      setNavScrolled(window.scrollY > 60);
+      // Show sticky button after scrolling ~80vh (past the hero)
+      setShowStickyBtn(window.scrollY > window.innerHeight * 0.8);
+    };
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
@@ -719,6 +724,33 @@ export default function Home() {
 
       {/* ── NARRATIVE MODAL ────────────────────────────────────────────────── */}
       {modalOpen && <NarrativeModal onClose={() => setModalOpen(false)} />}
+
+      {/* ── STICKY MOBILE BOOK NOW BUTTON ──────────────────────────────── */}
+      <div
+        className="fixed bottom-5 left-1/2 z-50 sm:hidden"
+        style={{
+          transform: showStickyBtn ? "translateX(-50%) translateY(0)" : "translateX(-50%) translateY(120px)",
+          transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), opacity 0.35s ease",
+          opacity: showStickyBtn ? 1 : 0,
+          pointerEvents: showStickyBtn ? "auto" : "none",
+        }}
+      >
+        <a
+          href="#book"
+          onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }}
+          className="flex items-center gap-2 px-6 py-3 text-sm font-bold tracking-widest uppercase"
+          style={{
+            fontFamily: "'Oswald', sans-serif",
+            background: "#c8a84b",
+            color: "#0a0a08",
+            boxShadow: "0 4px 24px rgba(200,168,75,0.45), 0 2px 8px rgba(0,0,0,0.6)",
+            letterSpacing: "0.12em",
+          }}
+        >
+          <span style={{ fontSize: "0.75rem" }}>►</span>
+          Book Now
+        </a>
+      </div>
 
       {/* ── NAV ────────────────────────────────────────────────────────────── */}
       <nav
