@@ -611,7 +611,7 @@ function NarrativeModal({ onClose }: { onClose: () => void }) {
             Now that you know what they buried — are you prepared to face it?
           </p>
           <a
-            href={BOOKING_URL}
+            href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-classified text-xs shrink-0"
@@ -754,7 +754,7 @@ export default function Home() {
                 {item}
               </a>
             ))}
-            <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-classified text-xs py-2 px-5">
+            <a href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-classified text-xs py-2 px-5">
               Book Now
             </a>
           </div>
@@ -782,7 +782,7 @@ export default function Home() {
                 </a>
               ))}
               <a
-                href={BOOKING_URL}
+                href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-classified text-xs py-2 px-5 text-center"
@@ -824,7 +824,7 @@ export default function Home() {
             <em style={{ color: "#c8a84b" }}>They lied.</em>
           </p>
 
-          <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-classified pulse-amber inline-block text-sm">
+          <a href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-classified pulse-amber inline-block text-sm">
             ▶ Book Your Investigation
           </a>
 
@@ -906,7 +906,7 @@ export default function Home() {
 
               {/* Action row: Access Files + Official Story modal trigger */}
               <div className="flex flex-wrap items-center gap-4 mt-2">
-                <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-classified inline-block text-xs">
+                <a href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-classified inline-block text-xs">
                   Access The Files →
                 </a>
                 <button
@@ -1034,7 +1034,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-classified inline-block text-xs self-start mt-2">
+              <a href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-classified inline-block text-xs self-start mt-2">
                 Secure Your Spot →
               </a>
             </RevealSection>
@@ -1212,7 +1212,7 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-classified pulse-amber inline-block text-sm">
+              <a href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-classified pulse-amber inline-block text-sm">
                 ▶ Secure Your Spot — Book Now
               </a>
               <a
@@ -1258,7 +1258,7 @@ export default function Home() {
                 Quick Access
               </p>
               {[
-                { label: "Book Investigation", href: BOOKING_URL },
+                { label: "Book Investigation", href: "#book" },
                 { label: "The Dossier", href: "#dossier" },
                 { label: "Experience Details", href: "#experience" },
                 { label: "Field Briefing", href: "#briefing" },
