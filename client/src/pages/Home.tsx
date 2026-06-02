@@ -48,15 +48,11 @@ const GALLERY_ITEMS = [
   },
 ];
 
-// ─── Next booking date: first Saturday at least 7 days from now ────────────────
+// ─── Event window: October 2 – 31, 2026 ─────────────────────────────────────
+const EVENT_START = new Date("2026-10-02T19:00:00");
+
 function getNextBookingDate(): Date {
-  const now = new Date();
-  const d = new Date(now);
-  d.setDate(d.getDate() + 7);
-  // Advance to next Saturday (day 6)
-  while (d.getDay() !== 6) d.setDate(d.getDate() + 1);
-  d.setHours(19, 0, 0, 0); // 7 PM
-  return d;
+  return EVENT_START;
 }
 
 // ─── Web Audio typewriter click synthesiser ───────────────────────────────────
@@ -1034,13 +1030,30 @@ export default function Home() {
                 className="text-xs mt-4 opacity-35 tracking-wider"
                 style={{ fontFamily: "'Courier Prime', monospace", color: "#c8a84b" }}
               >
-                {bookingTarget.toLocaleDateString("en-CA", { weekday: "long", year: "numeric", month: "long", day: "numeric" })} at 7:00 PM
+                October 2 – 31, 2026 · Nightly Investigations
               </p>
             </div>
 
-            <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-classified pulse-amber inline-block text-sm">
-              ▶ Secure Your Spot — Off The Couxh
-            </a>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn-classified pulse-amber inline-block text-sm">
+                ▶ Secure Your Spot — Book Now
+              </a>
+              <a
+                href={`sms:?&body=${encodeURIComponent("We should do this! Project SkyHarvest — a 60-min immersive investigation experience near Peterborough. The truth is buried: https://projectskyharvest.ca")}`}
+                className="inline-flex items-center gap-2 text-xs tracking-widest uppercase transition-all duration-200 hover:opacity-80 active:scale-95"
+                style={{
+                  fontFamily: "'Oswald', sans-serif",
+                  color: "#c8a84b",
+                  border: "1px solid rgba(200,168,75,0.35)",
+                  padding: "0.6rem 1.2rem",
+                  letterSpacing: "0.1em",
+                }}
+                title="Share via SMS"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Tell a Friend
+              </a>
+            </div>
 
             <p className="text-xs mt-8 tracking-widest opacity-50" style={{ fontFamily: "'Oswald', sans-serif", color: "#c8a84b" }}>
               LIMITED INVESTIGATION SLOTS AVAILABLE — BOOK BEFORE THEY DISAPPEAR
@@ -1093,13 +1106,16 @@ export default function Home() {
                 Underground Community
               </p>
               {[
-                { label: "Facebook", href: "#" },
-                { label: "Instagram", href: "#" },
-                { label: "TikTok", href: "#" },
+                { label: "Instagram", href: "https://www.instagram.com/escapemaze/" },
+                { label: "Facebook", href: "https://www.facebook.com/escapemazefun" },
+                { label: "LinkedIn", href: "https://ca.linkedin.com/company/escape-maze" },
+                { label: "TikTok", href: "https://www.tiktok.com/@escape_maze" },
               ].map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-xs transition-colors duration-200 hover:text-amber-300"
                   style={{ fontFamily: "'Courier Prime', monospace", color: "#6b5c3a" }}
                 >
