@@ -9,7 +9,7 @@
  *   3. Typewriter click sound on redaction bar hover (Web Audio API — no external file needed)
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 // ─── Asset URLs ────────────────────────────────────────────────────────────────
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/97632569/RwH8BvQZL4J93V8qt4eGMb/skyharvest-hero-Sn78RWLe8qXSodc5wcjgHN.webp";
@@ -625,6 +625,79 @@ function NarrativeModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+// ─── Booking Widget (Off The Couch iframe) ────────────────────────────────────
+function BookingWidget() {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const f = document.createElement("iframe");
+    f.src = "https://offthecouch.io/book/STALK";
+    f.id = "bookingIframe";
+    f.width = "100%";
+    f.scrolling = "no";
+    f.style.border = "none";
+    f.style.display = "block";
+    f.style.overflow = "hidden";
+    f.style.height = "auto";
+    f.title = "Book Project SkyHarvest";
+
+    let userHasInteracted = false;
+
+    const handleMessage = (e: MessageEvent) => {
+      if (e.origin !== "https://offthecouch.io") return;
+
+      if (e.data.action === "updateHeight") {
+        f.style.height = e.data.height + "px";
+      }
+
+      if (e.data.action === "scrollToTop" && userHasInteracted) {
+        const scrollTop = container.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: scrollTop - 30, behavior: "smooth" });
+      }
+
+      if (e.data.eventType && e.data.eventType !== "page_view") {
+        userHasInteracted = true;
+      }
+
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      const gtag = (...args: any[]) => { (window as any).dataLayer.push(args); };
+
+      switch (e.data.eventType) {
+        case "page_view":
+          gtag("event", "page_view");
+          break;
+        case "add_to_cart":
+          userHasInteracted = true;
+          gtag("event", "add_to_cart", { currency: e.data.currency, value: e.data.eventValue });
+          break;
+        case "begin_checkout":
+          userHasInteracted = true;
+          gtag("event", "begin_checkout", { currency: e.data.currency, value: e.data.eventValue });
+          break;
+        case "purchase":
+          gtag("event", "purchase", { currency: e.data.currency, value: e.data.eventValue });
+          break;
+        case "success":
+          gtag("event", "success", { currency: e.data.currency, value: e.data.eventValue });
+          break;
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    container.appendChild(f);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      if (container.contains(f)) container.removeChild(f);
+    };
+  }, []);
+
+  return <div ref={containerRef} id="otcContainer" />;
+}
+
 // ─── Main Home component ───────────────────────────────────────────────────────
 export default function Home() {
   const headline = "PROJECT SKYHARVEST: THE TRUTH IS BURIED.";
@@ -968,6 +1041,110 @@ export default function Home() {
           </div>
         </div>
         <div className="section-divider mt-16" />
+      </section>
+
+
+      {/* ── SURVIVORS' TESTIMONIALS ─────────────────────────────────────────── */}
+      <section className="relative py-24" style={{ background: "#080806" }}>
+        <div className="container">
+          <RevealSection>
+            <div className="text-center mb-14">
+              <span className="stamp-badge text-xs mb-4 inline-block" style={{ color: "#8b1a1a", borderColor: "#8b1a1a" }}>WITNESS STATEMENTS — FILE NRC-1995-4521</span>
+              <h2 className="text-3xl sm:text-4xl font-bold mt-4" style={{ fontFamily: "'Special Elite', cursive", color: "#c8a84b" }}>
+                Those Who Entered. Those Who Returned.
+              </h2>
+              <p className="text-sm mt-3 max-w-xl mx-auto opacity-60" style={{ fontFamily: "'Courier Prime', monospace", color: "#a89060" }}>
+                The following statements were collected from pre-launch test subjects. Names have been partially redacted per NRC Protocol 7.
+              </p>
+            </div>
+          </RevealSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {[
+              {
+                quote: "I've done a dozen escape rooms. Nothing prepared me for this. The moment the lights changed in Station 4, I genuinely forgot it was a game. My hands were shaking when we finally got out.",
+                name: "K. ████████",
+                role: "Pre-Launch Test Subject #003",
+                rating: 5,
+              },
+              {
+                quote: "The dossier they hand you at the start — I thought it was a prop. It wasn't. The research behind this is unsettling in the best possible way. We talked about it for days after.",
+                name: "D. █████████",
+                role: "Pre-Launch Test Subject #007",
+                rating: 5,
+              },
+              {
+                quote: "Our team of four thought we were ready. We were not. The atmosphere is unlike anything I've experienced. It's not just an escape room — it's a psychological investigation.",
+                name: "M. ███████",
+                role: "Pre-Launch Test Subject #011",
+                rating: 5,
+              },
+              {
+                quote: "I kept expecting a jump scare. It never came. Instead it was this slow, creeping dread that built the entire 60 minutes. Far more effective. I'm still thinking about what we found in Station 9.",
+                name: "T. ██████████",
+                role: "Pre-Launch Test Subject #014",
+                rating: 5,
+              },
+            ].map((t, i) => (
+              <RevealSection key={i}>
+                <div
+                  className="relative p-6 flex flex-col gap-4"
+                  style={{
+                    background: "rgba(200,168,75,0.03)",
+                    border: "1px solid rgba(200,168,75,0.12)",
+                    borderLeft: "3px solid rgba(200,168,75,0.4)",
+                  }}
+                >
+                  <div className="absolute top-3 right-3 opacity-20">
+                    <span className="stamp-badge text-xs" style={{ color: "#8b1a1a", borderColor: "#8b1a1a", fontSize: "0.55rem", padding: "1px 4px" }}>REDACTED</span>
+                  </div>
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: t.rating }).map((_, s) => (
+                      <span key={s} style={{ color: "#c8a84b", fontSize: "0.8rem" }}>★</span>
+                    ))}
+                  </div>
+                  <p
+                    className="text-sm leading-relaxed italic"
+                    style={{ fontFamily: "'Courier Prime', monospace", color: "#a89060" }}
+                  >
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                  <div className="mt-auto pt-3" style={{ borderTop: "1px solid rgba(200,168,75,0.1)" }}>
+                    <p className="text-xs font-bold" style={{ fontFamily: "'Oswald', sans-serif", color: "#c8a84b", letterSpacing: "0.08em" }}>{t.name}</p>
+                    <p className="text-xs opacity-50 mt-0.5" style={{ fontFamily: "'Courier Prime', monospace", color: "#6b5c3a" }}>{t.role}</p>
+                  </div>
+                </div>
+              </RevealSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── BOOKING WIDGET ──────────────────────────────────────────────────── */}
+      <section id="book" className="relative py-20" style={{ background: "#0a0a08" }}>
+        <div className="container">
+          <RevealSection>
+            <div className="text-center mb-10">
+              <span className="stamp-badge text-xs mb-4 inline-block" style={{ color: "#8b1a1a", borderColor: "#8b1a1a" }}>SECURE BOOKING PORTAL</span>
+              <h2 className="text-3xl sm:text-4xl font-bold mt-4" style={{ fontFamily: "'Special Elite', cursive", color: "#c8a84b" }}>
+                Reserve Your Investigation
+              </h2>
+              <p className="text-sm mt-3 opacity-60" style={{ fontFamily: "'Courier Prime', monospace", color: "#a89060" }}>
+                October 2 – 31, 2026 · Nightly Investigations · Limited Slots
+              </p>
+            </div>
+          </RevealSection>
+          <div
+            className="max-w-3xl mx-auto"
+            style={{
+              border: "1px solid rgba(200,168,75,0.15)",
+              background: "rgba(200,168,75,0.02)",
+              padding: "1.5rem",
+            }}
+          >
+            <BookingWidget />
+          </div>
+        </div>
       </section>
 
       {/* ── FINAL CTA ──────────────────────────────────────────────────────── */}
