@@ -611,11 +611,9 @@ function NarrativeModal({ onClose }: { onClose: () => void }) {
             Now that you know what they buried — are you prepared to face it?
           </p>
           <a
-            href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#book"
             className="btn-classified text-xs shrink-0"
-            onClick={onClose}
+            onClick={(e) => { e.preventDefault(); onClose(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }}
           >
             ▶ Book Your Investigation
           </a>
@@ -782,11 +780,9 @@ export default function Home() {
                 </a>
               ))}
               <a
-                href="#book" onClick={(e) => { e.preventDefault(); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#book"
                 className="btn-classified text-xs py-2 px-5 text-center"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); document.getElementById("book")?.scrollIntoView({ behavior: "smooth" }); }}
               >
                 Book Now
               </a>
